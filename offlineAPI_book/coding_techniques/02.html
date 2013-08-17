@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript Coding Techniques -sample MVC coding-</title>
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.11.0/build/cssreset/cssreset-min.css">
+</head>
+<body>
+    <header>
+        <h1>JavaScript Coding Techniques -sample MVC coding-</h1>
+    </header>
+    <div id="main">
+        ヘッダー
+        <h2></h2>
+        内容
+        <dl>
+            <dt></dt>
+            <dd></dd>
+        </dl>
+        <input type="button" id="btn" value="データ取得">
+    </div>
+    <footer>
+    </footer>
+    <script src="./libraries/jquery-1.10.2.min.js"></script>
+    <script src="./libraries/underscore-1.5.1.min.js"></script>
+    <script>
+        //
+        // Model
+        //
+        var Model = {
+            url: "./testdata.json",
+            get: function () {
+                // AjaxでデータをGET
+                $.getJSON(this.url, '', function (data) {
+                    $(window).trigger("Model.get", [data]);
+                })
+
+            }
+        };
+
+        //
+        // View
+        //
+        var HeaderView = {
+                render: function (obj) {
+                    $("h2").text(obj.title);
+                }
+            },
+            ArticleView = {
+                render: function (obj) {
+                    $("dt").text(obj.title);
+                    $("dd").text(obj.mesg);
+                }
+            };
+
+        //
+        // Controller
+        //
+        $("#btn").click(function () {
+            // データの取得
+            var obj_ = Model.get();
+        });
+        $(window).bind("Model.get", function (e, data) {
+            // Viewへの表示処理
+            HeaderView.render(data);
+            ArticleView.render(data);
+        });
+
+    </script>
+</body>
+</html>
